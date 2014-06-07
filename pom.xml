@@ -13,45 +13,18 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
-  
 
   <dependencies>
-      
 		<dependency>
 			<groupId>com.google.http-client</groupId>
 			<artifactId>google-http-client-jackson2</artifactId>
 			<version>1.15.0-rc</version>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>commons-codec</artifactId>
-		   <groupId>commons-codec</groupId>
-		  </exclusion>
-		     <exclusion>
-		         <artifactId>commons-logging</artifactId>
-		         <groupId>commons-logging</groupId>
-		     </exclusion>
-		  <exclusion>
-		   <artifactId>google-http-client</artifactId>
-		   <groupId>com.google.http-client</groupId>
-		  </exclusion>
-		  <exclusion>
-		   <artifactId>jackson-core</artifactId>
-		   <groupId>com.fasterxml.jackson.core</groupId>
-		  </exclusion>
-		 </exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-storage</artifactId>
 			<version>v1beta2-rev6-1.15.0-rc</version>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>google-api-client</artifactId>
-		   <groupId>com.google.api-client</groupId>
-		  </exclusion>
-		 </exclusions>
 		</dependency>
 
 		<dependency>
@@ -59,24 +32,12 @@
 			<artifactId>junit</artifactId>
 			<version>LATEST</version>
 			<scope>test</scope>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>hamcrest-core</artifactId>
-		   <groupId>org.hamcrest</groupId>
-		  </exclusion>
-		 </exclusions>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-plus</artifactId>
 			<version>v1-rev64-1.13.2-beta</version>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>google-api-client</artifactId>
-		   <groupId>com.google.api-client</groupId>
-		  </exclusion>
-		 </exclusions>
 		</dependency>
         
          
@@ -84,40 +45,22 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.0-alpha3</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>apache-mime4j</artifactId>
-                    <groupId>org.apache.james</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-io</artifactId>
-                    <groupId>commons-io</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-             <exclusion>
-              <artifactId>httpcore</artifactId>
-              <groupId>org.apache.httpcomponents</groupId>
-             </exclusion>
-            </exclusions>
-        </dependency>
+		</dependency>
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.commons-httpclient</artifactId>
+      <version>3.1_7</version>
+    </dependency>
     <dependency>
       <groupId>org.kie.modules</groupId>
       <artifactId>org-apache-commons-httpclient</artifactId>
       <version>6.1.0.Beta3</version>
       <classifier>tests</classifier>
-     <exclusions>
-      <exclusion>
-       <artifactId>commons-codec</artifactId>
-       <groupId>commons-codec</groupId>
-      </exclusion>
-      <exclusion>
-       <artifactId>commons-httpclient</artifactId>
-       <groupId>commons-httpclient</groupId>
-      </exclusion>
-     </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <version>2.4</version>
     </dependency>
   </dependencies>
 </project>

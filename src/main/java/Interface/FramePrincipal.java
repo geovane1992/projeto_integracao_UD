@@ -3,26 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Interface;
 
-
-import ClassesUD.Manipula;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
@@ -31,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 /**
  *
  * @author gaoliveira
@@ -44,6 +43,15 @@ public class FramePrincipal extends javax.swing.JFrame {
         initComponents();
     }
 
+    String arquivo;
+
+    private Bucket bac;
+    
+
+    public void setBucket(Bucket bucket){
+        this.bac = bucket;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,16 +62,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        dir_dow = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        bt_atu = new javax.swing.JToggleButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable = new javax.swing.JTable();
-        bt_dow = new javax.swing.JToggleButton();
-        bt_xml = new javax.swing.JToggleButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -74,9 +72,105 @@ public class FramePrincipal extends javax.swing.JFrame {
         bt_upl = new javax.swing.JToggleButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        dir_dow = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        bt_atu = new javax.swing.JToggleButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable = new javax.swing.JTable();
+        bt_dow = new javax.swing.JToggleButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel3.setText("Upload");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Diretório do arquivo:");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("Nome do Arquivo:");
+
+        bt_upl.setText("Upload");
+        bt_upl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_uplActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel6.setText("Ex: c:/temp");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel7.setText("Ex: teste.txt");
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(302, 302, 302)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(bt_upl)
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel6)
+                                .addGroup(jPanel8Layout.createSequentialGroup()
+                                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(dir_arq)
+                                        .addComponent(nom_arq, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)))
+                                .addComponent(jLabel7)))))
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel3)
+                .addGap(65, 65, 65)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(dir_arq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nom_arq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel7)
+                .addGap(19, 19, 19)
+                .addComponent(bt_upl)
+                .addContainerGap(158, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Upload", jPanel7);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -86,6 +180,11 @@ public class FramePrincipal extends javax.swing.JFrame {
         jLabel2.setText("Diretório para download:");
 
         bt_atu.setText("Atualizar");
+        bt_atu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_atuActionPerformed(evt);
+            }
+        });
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -112,9 +211,21 @@ public class FramePrincipal extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable);
@@ -126,12 +237,11 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        bt_xml.setText("Carrega XML");
-        bt_xml.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bt_xmlActionPerformed(evt);
-            }
-        });
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel8.setText("Ex: c:/temp");
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel9.setText("Ex: c:/temp");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -143,25 +253,34 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGap(268, 268, 268))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 568, Short.MAX_VALUE)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(bt_atu)
+                                .addGap(21, 21, 21))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(bt_dow)
+                                .addGap(18, 18, 18))))))
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel2)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dir_dow, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(468, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(bt_xml)
-                        .addGap(18, 18, 18)
-                        .addComponent(bt_atu)
-                        .addGap(21, 21, 21))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(bt_dow)
-                        .addGap(18, 18, 18))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGap(314, 314, 314)
+                    .addComponent(jLabel8)
+                    .addContainerGap(314, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,15 +291,20 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(dir_dow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt_atu)
-                    .addComponent(bt_xml))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addGap(16, 16, 16)
+                .addComponent(bt_atu)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(bt_dow)
                 .addGap(26, 26, 26))
+            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGap(195, 195, 195)
+                    .addComponent(jLabel8)
+                    .addContainerGap(195, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -196,125 +320,187 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Download", jPanel5);
 
-        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane2)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane2)
+        );
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Upload");
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("Diretório do arquivo:");
+    private void bt_uplActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_uplActionPerformed
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel5.setText("Nome do Arquivo:");
+        File diretorio = new File(dir_arq.getText());
+        File file = new File(dir_arq.getText() + "/" + nom_arq.getText());
 
-        bt_upl.setText("Upload");
+        if (!diretorio.exists()) {
+            JOptionPane.showMessageDialog(null, "Informe um diretório válido!");
+        } else if (!file.exists() || "".equals(nom_arq.getText())) {
+            JOptionPane.showMessageDialog(null, "Informe um arquivo válido!");
+        } else {
+            try {
+//////////////////////////////////////// Validar tamanho de arquivo/////////////////////////////////////////////////               
+                RandomAccessFile arquivo = new RandomAccessFile(dir_arq.getText() + "/" + nom_arq.getText(), "r");
+                long tamanho = arquivo.length();
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-        jLabel6.setText("Ex: c:\\temp\\");
+                if (tamanho >= 104857600) {
+                    JOptionPane.showMessageDialog(null, "Arquivo excedeu o tamanho máximo de 100 MB!");
+                    arquivo.close();
+                    return;
+                }
 
-            jLabel7.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-            jLabel7.setText("Ex: teste.txt");
+//////////////////////////////////////////// Carrega arquivo para o bucket /////////////////////////////////////////
+                HttpClient client = new HttpClient();
+                client.getParams().setParameter("http.useragent", "Test Client");
 
-            javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-            jPanel8.setLayout(jPanel8Layout);
-            jPanel8Layout.setHorizontalGroup(
-                jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel8Layout.createSequentialGroup()
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addGap(302, 302, 302)
-                            .addComponent(jLabel3))
-                        .addGroup(jPanel8Layout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(bt_upl)
-                                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(jPanel8Layout.createSequentialGroup()
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel5))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(dir_arq)
-                                            .addComponent(nom_arq, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)))
-                                    .addComponent(jLabel7)))))
-                    .addContainerGap(79, Short.MAX_VALUE))
-            );
-            jPanel8Layout.setVerticalGroup(
-                jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel8Layout.createSequentialGroup()
-                    .addGap(22, 22, 22)
-                    .addComponent(jLabel3)
-                    .addGap(65, 65, 65)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(dir_arq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel6)
-                    .addGap(18, 18, 18)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(nom_arq, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabel7)
-                    .addGap(19, 19, 19)
-                    .addComponent(bt_upl)
-                    .addContainerGap(158, Short.MAX_VALUE))
-            );
+                BufferedReader br = null;
+                String apikey = "AIzaSyAuKiAdUluAz4IEaOUoXldA8XuwEbty5V8";
 
-            javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-            jPanel7.setLayout(jPanel7Layout);
-            jPanel7Layout.setHorizontalGroup(
-                jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel7Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap())
-            );
-            jPanel7Layout.setVerticalGroup(
-                jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            );
+                File input = new File(dir_arq.getText() + "/" + nom_arq.getText());
 
-            jTabbedPane2.addTab("Upload", jPanel7);
+                PostMethod method = new PostMethod("https://www.googleapis.com/upload/storage/v1/b/" + bac.getNome() + "/o?uploadType=media&name=" + nom_arq.getText());
+                method.addParameter("uploadType", "media");
+                method.addParameter("name", nom_arq.getText());
+                method.setRequestEntity(new InputStreamRequestEntity(
+                        new FileInputStream(input), input.length()));
+//	    method.setRequestHeader("Content-type", "image/png; charset=ISO-8859-1");
+                method.setRequestHeader("Content-type", "application/octet-stream");
 
-            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-            getContentPane().setLayout(layout);
-            layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jTabbedPane2)
-            );
-            layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jTabbedPane2)
-            );
+//	    try{
+                int returnCode = client.executeMethod(method);
 
-            pack();
-        }// </editor-fold>//GEN-END:initComponents
+                if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
+                    System.err.println("The Post method is not implemented by this URI");
+                    method.getResponseBodyAsString();
+                } else {
+                    br = new BufferedReader(new InputStreamReader(method.getResponseBodyAsStream()));
+                    String readLine;
+                    while (((readLine = br.readLine()) != null)) {
+                        System.err.println(readLine);
+                    }
+                    br.close();
+                }
+
+            } catch (Exception e) {
+                System.err.println(e);
+
+            }
+            JOptionPane.showMessageDialog(null, "Arquivo carregado com sucesso!");
+        }
+    }//GEN-LAST:event_bt_uplActionPerformed
+
+    private void bt_atuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_atuActionPerformed
+
+
+///////////////////////////////////////////// Baixa xml do bucket //////////////////////////////////////////////////////////        
+        File diretorio = new File(dir_dow.getText());
+
+        if ("".equals(dir_dow.getText())) {
+            JOptionPane.showMessageDialog(null, "Campo diretório deve ser preenchido!");
+        } else if (!diretorio.exists()) {
+            JOptionPane.showMessageDialog(null, "Este não é um diretório válido!");
+        } else {
+            try {
+                URL arquivoBucket = new URL("http://storage.googleapis.com/" + bac.getNome());
+
+                //Passa caminho de saida do arquivo que esta sendo baixado
+                ReadableByteChannel canalArquivoSaida = Channels.newChannel(arquivoBucket.openStream());
+                FileOutputStream arquivoSaida = new FileOutputStream(dir_dow.getText() + "/" + bac.getNome() + ".xml");
+
+                //Calcula tempo que o processo de download levou
+                long inicio = System.currentTimeMillis();
+                arquivoSaida.getChannel().transferFrom(canalArquivoSaida, 0, 1 << 24);
+                long fim = System.currentTimeMillis();
+                System.out.println(fim - inicio);
+
+                arquivoSaida.close(); //libera o arquivo após ser baixado.
+
+ /////////////////////////////// Carrega tabela com nome de arquivos ////////////////////////////////////////////////////       
+                //percorret tabela
+                DefaultTableModel adm = (DefaultTableModel) jTable.getModel();
+                adm.setNumRows(0);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                //Importar arquivo xml         
+                File file = new File(dir_dow.getText() + "/" + bac.getNome() + ".xml");
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                DocumentBuilder db = dbf.newDocumentBuilder();
+                Document doc = db.parse(file);
+                doc.getDocumentElement().normalize();
+                System.out.println("Root element " + doc.getDocumentElement().getNodeName());
+                NodeList nodeLst = doc.getElementsByTagName("Contents");
+                System.out.println("Information of all employees");
+
+                for (int s = 0; s < nodeLst.getLength(); s++) {
+
+                    Node fstNode = nodeLst.item(s);
+
+                    if (fstNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                        Element fstElmnt = (Element) fstNode;
+                        NodeList fstNmElmntLst = fstElmnt.getElementsByTagName("Key");
+                        Element fstNmElmnt = (Element) fstNmElmntLst.item(0);
+                        NodeList fstNm = fstNmElmnt.getChildNodes();
+                        System.out.println("Key : " + ((Node) fstNm.item(0)).getNodeValue());
+
+                        String val = ((Node) fstNm.item(0)).getNodeValue();
+
+                        adm.addRow(new Object[]{val});
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }//GEN-LAST:event_bt_atuActionPerformed
+
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        int linha_selecionada = jTable.getSelectedRow();
+        Object arq = jTable.getValueAt(linha_selecionada, 0);
+        arquivo = arq.toString();
+    }//GEN-LAST:event_jTableMouseClicked
 
     private void bt_dowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_dowActionPerformed
-   
-       
-    }//GEN-LAST:event_bt_dowActionPerformed
+        File dir = new File(dir_dow.getText());
 
-    private void bt_xmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_xmlActionPerformed
-         
-        if("".equals(dir_dow.getText())){
-            JOptionPane.showMessageDialog(null, "Informe um diretório!");
+        if ("".equals(dir_dow.getText())) {
+            JOptionPane.showMessageDialog(null, "Campo diretório não pode estar vazio!");
+        } else if (!dir.exists()) {
+            JOptionPane.showMessageDialog(null, "Informe um diretório válido!");
+        } else {
+            try {
+
+                URL arquivoBucket = new URL("https://console.developers.google.com/m/cloudstorage/b/" + bac.getNome() + "/o/" + arquivo);
+
+                //Passa caminho de saida do arquivo que esta sendo baixado
+                ReadableByteChannel canalArquivoSaida = Channels.newChannel(arquivoBucket.openStream());
+                FileOutputStream arquivoSaida = new FileOutputStream(dir_dow.getText() + "/" + arquivo);
+
+                //Calcula tempo que o processo de download levou
+                long inicio = System.currentTimeMillis();
+                arquivoSaida.getChannel().transferFrom(canalArquivoSaida, 0, 1 << 24);
+                long fim = System.currentTimeMillis();
+                System.out.println(fim - inicio);
+
+                JOptionPane.showMessageDialog(null, "Arquivo baixado com sucesso!");
+
+                arquivoSaida.close(); //libera o arquivo após ser baixado.
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Arquivo não possui permissão para download!");
+
+            }
         }
-                else{
-        try{
-            Manipula.downloadArquivo(null, null);
-        }catch (Exception e) {
-System.err.println(e);
-	    
-        }
-         JOptionPane.showMessageDialog(null, "Arquivo XML gerado com sucesso!");
-        }
-        
-         
-    }//GEN-LAST:event_bt_xmlActionPerformed
+    }//GEN-LAST:event_bt_dowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -353,9 +539,8 @@ System.err.println(e);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton bt_atu;
-    private javax.swing.JToggleButton bt_dow;
+    public javax.swing.JToggleButton bt_dow;
     private javax.swing.JToggleButton bt_upl;
-    private javax.swing.JToggleButton bt_xml;
     private javax.swing.JTextField dir_arq;
     private javax.swing.JTextField dir_dow;
     private javax.swing.JLabel jLabel1;
@@ -365,13 +550,15 @@ System.err.println(e);
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable;
+    public javax.swing.JTable jTable;
     private javax.swing.JTextField nom_arq;
     // End of variables declaration//GEN-END:variables
 }
